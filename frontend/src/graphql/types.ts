@@ -3202,6 +3202,7 @@ export type QuerySceneFragment = {
   id: string;
   release_date?: string | null;
   title?: string | null;
+  code?: string | null;
   duration?: number | null;
   urls: Array<{
     __typename: "URL";
@@ -31053,6 +31054,7 @@ export type ScenePairingsQuery = {
         title?: string | null;
         date?: string | null;
         duration?: number | null;
+        code?: string | null;
         release_date?: string | null;
         studio?: { __typename: "Studio"; id: string; name: string } | null;
         images: Array<{
@@ -31081,6 +31083,7 @@ export type ScenesQuery = {
       id: string;
       release_date?: string | null;
       title?: string | null;
+      code?: string | null;
       duration?: number | null;
       urls: Array<{
         __typename: "URL";
@@ -31127,6 +31130,7 @@ export type ScenesWithFingerprintsQuery = {
       id: string;
       release_date?: string | null;
       title?: string | null;
+      code?: string | null;
       duration?: number | null;
       fingerprints: Array<{
         __typename: "Fingerprint";
@@ -31181,6 +31185,7 @@ export type ScenesWithoutCountQuery = {
       id: string;
       release_date?: string | null;
       title?: string | null;
+      code?: string | null;
       duration?: number | null;
       urls: Array<{
         __typename: "URL";
@@ -31462,6 +31467,7 @@ export type StudioPerformersQuery = {
         id: string;
         title?: string | null;
         duration?: number | null;
+        code?: string | null;
         release_date?: string | null;
         production_date?: string | null;
         studio?: { __typename: "Studio"; id: string; name: string } | null;
@@ -31735,6 +31741,7 @@ export const QuerySceneFragmentDoc = {
           { kind: "Field", name: { kind: "Name", value: "id" } },
           { kind: "Field", name: { kind: "Name", value: "release_date" } },
           { kind: "Field", name: { kind: "Name", value: "title" } },
+          { kind: "Field", name: { kind: "Name", value: "code" } },
           { kind: "Field", name: { kind: "Name", value: "duration" } },
           {
             kind: "Field",
@@ -66304,6 +66311,10 @@ export const ScenePairingsDocument = {
                             },
                             {
                               kind: "Field",
+                              name: { kind: "Name", value: "code" },
+                            },
+                            {
+                              kind: "Field",
                               name: { kind: "Name", value: "release_date" },
                             },
                             {
@@ -66507,6 +66518,7 @@ export const ScenesDocument = {
           { kind: "Field", name: { kind: "Name", value: "id" } },
           { kind: "Field", name: { kind: "Name", value: "release_date" } },
           { kind: "Field", name: { kind: "Name", value: "title" } },
+          { kind: "Field", name: { kind: "Name", value: "code" } },
           { kind: "Field", name: { kind: "Name", value: "duration" } },
           {
             kind: "Field",
@@ -66771,6 +66783,7 @@ export const ScenesWithFingerprintsDocument = {
           { kind: "Field", name: { kind: "Name", value: "id" } },
           { kind: "Field", name: { kind: "Name", value: "release_date" } },
           { kind: "Field", name: { kind: "Name", value: "title" } },
+          { kind: "Field", name: { kind: "Name", value: "code" } },
           { kind: "Field", name: { kind: "Name", value: "duration" } },
           {
             kind: "Field",
@@ -66976,6 +66989,7 @@ export const ScenesWithoutCountDocument = {
           { kind: "Field", name: { kind: "Name", value: "id" } },
           { kind: "Field", name: { kind: "Name", value: "release_date" } },
           { kind: "Field", name: { kind: "Name", value: "title" } },
+          { kind: "Field", name: { kind: "Name", value: "code" } },
           { kind: "Field", name: { kind: "Name", value: "duration" } },
           {
             kind: "Field",
@@ -68105,6 +68119,10 @@ export const StudioPerformersDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "duration" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "code" },
                             },
                             {
                               kind: "Field",
