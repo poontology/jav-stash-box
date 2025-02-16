@@ -14,7 +14,7 @@ services:
 
   stash-box:
     container_name: stash-box
-    image: stashapp/stash-box:development
+    image: javstash/stash-box:development
     restart: always
     logging:
       driver: "json-file"
