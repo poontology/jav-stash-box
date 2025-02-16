@@ -12,11 +12,21 @@ import {
   formatDuration,
   imageType,
 } from "src/utils";
-import { Icon, Thumbnail, SceneCardPerformerName } from "src/components/fragments";
+import {
+  Icon,
+  Thumbnail,
+  SceneCardPerformerName,
+} from "src/components/fragments";
 
 type Performance = Pick<
   Scene,
-  "id" | "title" | "images" | "duration" | "code" | "release_date" | "performers"
+  | "id"
+  | "title"
+  | "images"
+  | "duration"
+  | "code"
+  | "release_date"
+  | "performers"
 > & {
   studio?: Pick<Studio, "id" | "name"> | null;
 };
