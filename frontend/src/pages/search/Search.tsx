@@ -132,7 +132,7 @@ const Search: FC = () => {
   const { loading, data } = useSearchAll(
     {
       term: term ?? "",
-      limit: 10,
+      limit: 25,
     },
     !term,
   );
