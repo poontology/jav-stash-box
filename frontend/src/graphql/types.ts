@@ -31064,6 +31064,19 @@ export type ScenePairingsQuery = {
           width: number;
           height: number;
         }>;
+        performers: Array<{
+          __typename: "PerformerAppearance";
+          as?: string | null;
+          performer: {
+            __typename: "Performer";
+            id: string;
+            name: string;
+            disambiguation?: string | null;
+            deleted: boolean;
+            gender?: GenderEnum | null;
+            aliases: Array<string>;
+          };
+        }>;
       }>;
     }>;
   };
@@ -31477,6 +31490,19 @@ export type StudioPerformersQuery = {
           url: string;
           width: number;
           height: number;
+        }>;
+        performers: Array<{
+          __typename: "PerformerAppearance";
+          as?: string | null;
+          performer: {
+            __typename: "Performer";
+            id: string;
+            name: string;
+            disambiguation?: string | null;
+            deleted: boolean;
+            gender?: GenderEnum | null;
+            aliases: Array<string>;
+          };
         }>;
       }>;
     }>;
@@ -66350,6 +66376,35 @@ export const ScenePairingsDocument = {
                                 ],
                               },
                             },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "performers" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "as" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "performer" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "FragmentSpread",
+                                          name: {
+                                            kind: "Name",
+                                            value: "ScenePerformerFragment",
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
                           ],
                         },
                       },
@@ -66376,6 +66431,25 @@ export const ScenePairingsDocument = {
           { kind: "Field", name: { kind: "Name", value: "url" } },
           { kind: "Field", name: { kind: "Name", value: "width" } },
           { kind: "Field", name: { kind: "Name", value: "height" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ScenePerformerFragment" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "Performer" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "name" } },
+          { kind: "Field", name: { kind: "Name", value: "disambiguation" } },
+          { kind: "Field", name: { kind: "Name", value: "deleted" } },
+          { kind: "Field", name: { kind: "Name", value: "gender" } },
+          { kind: "Field", name: { kind: "Name", value: "aliases" } },
         ],
       },
     },
@@ -68165,6 +68239,35 @@ export const StudioPerformersDocument = {
                                 ],
                               },
                             },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "performers" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "as" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "performer" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "FragmentSpread",
+                                          name: {
+                                            kind: "Name",
+                                            value: "ScenePerformerFragment",
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
                           ],
                         },
                       },
@@ -68191,6 +68294,25 @@ export const StudioPerformersDocument = {
           { kind: "Field", name: { kind: "Name", value: "url" } },
           { kind: "Field", name: { kind: "Name", value: "width" } },
           { kind: "Field", name: { kind: "Name", value: "height" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ScenePerformerFragment" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "Performer" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "name" } },
+          { kind: "Field", name: { kind: "Name", value: "disambiguation" } },
+          { kind: "Field", name: { kind: "Name", value: "deleted" } },
+          { kind: "Field", name: { kind: "Name", value: "gender" } },
+          { kind: "Field", name: { kind: "Name", value: "aliases" } },
         ],
       },
     },

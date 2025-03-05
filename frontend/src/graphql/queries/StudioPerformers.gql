@@ -48,6 +48,12 @@ query StudioPerformers(
         images {
           ...ImageFragment
         }
+        performers {
+          as
+          performer {
+            ...ScenePerformerFragment
+          }
+        }
       }
     }
   }

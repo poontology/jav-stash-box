@@ -50,6 +50,12 @@ query ScenePairings(
         images {
           ...ImageFragment
         }
+        performers {
+          as
+          performer {
+            ...ScenePerformerFragment
+          }
+        }
       }
     }
   }
