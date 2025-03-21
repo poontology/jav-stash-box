@@ -715,6 +715,7 @@ type StashBoxConfig struct {
 	GuidelinesURL              string `json:"guidelines_url"`
 	RequireSceneDraft          bool   `json:"require_scene_draft"`
 	EditUpdateLimit            int    `json:"edit_update_limit"`
+	RequireTagRole             bool   `json:"require_tag_role"`
 }
 
 type StringCriterionInput struct {
@@ -1738,6 +1739,8 @@ const (
 	// May grant and rescind invite tokens and resind invite keys
 	RoleEnumManageInvites RoleEnum = "MANAGE_INVITES"
 	RoleEnumBot           RoleEnum = "BOT"
+	RoleEnumReadOnly      RoleEnum = "READ_ONLY"
+	RoleEnumEditTags      RoleEnum = "EDIT_TAGS"
 )
 
 var AllRoleEnum = []RoleEnum{
@@ -1749,11 +1752,13 @@ var AllRoleEnum = []RoleEnum{
 	RoleEnumInvite,
 	RoleEnumManageInvites,
 	RoleEnumBot,
+	RoleEnumReadOnly,
+	RoleEnumEditTags,
 }
 
 func (e RoleEnum) IsValid() bool {
 	switch e {
-	case RoleEnumRead, RoleEnumVote, RoleEnumEdit, RoleEnumModify, RoleEnumAdmin, RoleEnumInvite, RoleEnumManageInvites, RoleEnumBot:
+	case RoleEnumRead, RoleEnumVote, RoleEnumEdit, RoleEnumModify, RoleEnumAdmin, RoleEnumInvite, RoleEnumManageInvites, RoleEnumBot, RoleEnumReadOnly, RoleEnumEditTags:
 		return true
 	}
 	return false
