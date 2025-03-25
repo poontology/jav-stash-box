@@ -77,12 +77,7 @@ export const PerformerSchema = yup.object({
       "Invalid cup size. Only american sizes are accepted.",
     )
     .nullable(),
-  waistSize: yup
-    .number()
-    .transform(zeroCheck)
-    .min(15, "Invalid waist size")
-    .max(50, "Invalid waist size")
-    .nullable(),
+  waistSize: yup.number().transform(zeroCheck).nullable(),
   hipSize: yup.number().transform(zeroCheck).nullable(),
   breastType: yup
     .string()
