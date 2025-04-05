@@ -34,6 +34,13 @@ jobs:
 
     steps:
 
+    - name: Login to DockerHub
+      if: ${{ github.event_name != 'pull_request' }}
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
     - name: Install vips
       run: sudo apt update && sudo apt install -y libvips-dev
 
@@ -166,21 +173,18 @@ jobs:
           CHECKSUMS_SHA1
         gzip: false
 
-    - name: Login to DockerHub
-      if: ${{ github.event_name != 'pull_request' }}
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-
     - name: Development Docker
       if: ${{ github.event_name == 'push' }}
+      env:
+        DOCKERHUB_IMAGE: ${{ vars.DOCKERHUB_IMAGE || 'javstash/stash-box' }}
       run: |
-        docker build -t javstash/stash-box:development -f ./docker/ci/x86_64/Dockerfile ./dist
-        docker push javstash/stash-box:development
+        docker build -t ${DOCKERHUB_IMAGE}:development -f ./docker/ci/x86_64/Dockerfile ./dist
+        docker push ${DOCKERHUB_IMAGE}:development
 
     - name: Release Docker
       if: ${{ github.event_name == 'release' && github.ref != 'refs/tags/latest-develop' }}
+      env:
+        DOCKERHUB_IMAGE: ${{ vars.DOCKERHUB_IMAGE || 'javstash/stash-box' }}
       run: |
-        docker build -t javstash/stash-box:latest -f ./docker/ci/x86_64/Dockerfile ./dist
-        docker push javstash/stash-box:latest
+        docker build -t ${DOCKERHUB_IMAGE}:latest -f ./docker/ci/x86_64/Dockerfile ./dist
+        docker push ${DOCKERHUB_IMAGE}:latest
