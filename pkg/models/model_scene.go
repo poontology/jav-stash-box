@@ -103,12 +103,14 @@ func CreateSceneURLs(sceneID uuid.UUID, urls []*URL) SceneURLs {
 }
 
 type SceneFingerprint struct {
+	ID        int       `db:"id" json:"id"`
 	SceneID   uuid.UUID `db:"scene_id" json:"scene_id"`
 	UserID    uuid.UUID `db:"user_id" json:"user_id"`
 	Hash      string    `db:"hash" json:"hash"`
 	Algorithm string    `db:"algorithm" json:"algorithm"`
 	Duration  int       `db:"duration" json:"duration"`
 	CreatedAt time.Time `db:"created_at" json:"created_at"`
+	Part      int       `db:"part" json:"part"`
 	Vote      int       `db:"vote" json:"vote"`
 }
 
@@ -142,6 +144,7 @@ func CreateSceneFingerprints(sceneID uuid.UUID, fingerprints []*FingerprintEditI
 					Hash:      fingerprint.Hash,
 					Algorithm: fingerprint.Algorithm.String(),
 					Duration:  fingerprint.Duration,
+					Part:      fingerprint.Part,
 					CreatedAt: fingerprint.Created,
 				})
 			}

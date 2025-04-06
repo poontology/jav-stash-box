@@ -84,6 +84,7 @@ func (qb *sceneQueryBuilder) CreateOrReplaceFingerprints(sceneFingerprints model
 		ON CONFLICT ON CONSTRAINT scene_fingerprints_scene_id_fingerprint_id_user_id_key
 		DO UPDATE SET 
 		duration = EXCLUDED.duration,
+		part = EXCLUDED.part,
 		vote = EXCLUDED.vote
 	`
 
@@ -99,6 +100,7 @@ func (qb *sceneQueryBuilder) CreateOrReplaceFingerprints(sceneFingerprints model
 			SceneID:       fp.SceneID,
 			UserID:        fp.UserID,
 			Duration:      fp.Duration,
+			Part:          fp.Part,
 			Vote:          fp.Vote,
 		})
 	}
@@ -582,9 +584,11 @@ func (qb *sceneQueryBuilder) queryScenes(query string, args []interface{}) (mode
 
 type sceneFingerprintGroup struct {
 	SceneID        uuid.UUID                   `db:"scene_id"`
+	ID             int                         `db:"id"`
 	Hash           string                      `db:"hash"`
 	Algorithm      models.FingerprintAlgorithm `db:"algorithm"`
 	Duration       float64                     `db:"duration"`
+	Part           int                         `db:"part"`
 	Submissions    int                         `db:"submissions"`
 	Reports        int                         `db:"reports"`
 	NetSubmissions int                         `db:"net_submissions"`
@@ -596,9 +600,11 @@ type sceneFingerprintGroup struct {
 
 func fingerprintGroupToFingerprint(fpg sceneFingerprintGroup) *models.Fingerprint {
 	return &models.Fingerprint{
+		ID:            fpg.ID,
 		Hash:          fpg.Hash,
 		Algorithm:     fpg.Algorithm,
 		Duration:      int(fpg.Duration),
+		Part:          fpg.Part,
 		Submissions:   fpg.Submissions,
 		Reports:       fpg.Reports,
 		UserSubmitted: fpg.UserSubmitted,
@@ -611,7 +617,7 @@ func fingerprintGroupToFingerprint(fpg sceneFingerprintGroup) *models.Fingerprin
 func (qb *sceneQueryBuilder) GetFingerprints(id uuid.UUID) (models.SceneFingerprints, error) {
 	fingerprints := models.SceneFingerprints{}
 	err := qb.dbi.db().SelectContext(qb.dbi.txn.ctx, &fingerprints, `
-    SELECT SFP.scene_id, SFP.user_id, SFP.duration, SFP.created_at, FP.hash, FP.algorithm
+    SELECT SFP.scene_id, SFP.user_id, SFP.duration, SFP.part, SFP.created_at, FP.id, FP.hash, FP.algorithm
 		FROM scene_fingerprints SFP
 		JOIN fingerprints FP ON SFP.fingerprint_id = FP.id
 		WHERE SFP.scene_id = $1
@@ -623,9 +629,11 @@ func (qb *sceneQueryBuilder) GetAllFingerprints(currentUserID uuid.UUID, ids []u
 	query := `
 		SELECT
 			SFP.scene_id,
+			FP.id,
 			FP.hash,
 			FP.algorithm,
 			mode() WITHIN GROUP (ORDER BY SFP.duration) as duration,
+			mode() WITHIN GROUP (ORDER BY SFP.part) as part,
 			COUNT(CASE WHEN SFP.vote = 1 THEN 1 END) as submissions,
 			COUNT(CASE WHEN SFP.vote = -1 THEN 1 END) as reports,
 			SUM(SFP.vote) as net_submissions,
@@ -643,7 +651,7 @@ func (qb *sceneQueryBuilder) GetAllFingerprints(currentUserID uuid.UUID, ids []u
 	}
 
 	query += `
-		GROUP BY SFP.scene_id, FP.algorithm, FP.hash
+		GROUP BY SFP.scene_id, FP.id, FP.algorithm, FP.hash
 		ORDER BY net_submissions DESC`
 
 	arg := map[string]interface{}{

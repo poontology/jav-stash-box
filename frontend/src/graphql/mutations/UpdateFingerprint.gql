@@ -1,0 +1,7 @@
+mutation UpdateFingerprint($scene_id: ID!, $fingerprint_id: Int!, $part: Int!) {
+  fingerprintPartUpdate(
+    scene_id: $scene_id
+    fingerprint_id: $fingerprint_id
+    part: $part
+  )
+}

@@ -12,6 +12,7 @@ type dbSceneFingerprint struct {
 	FingerprintID int       `db:"fingerprint_id" json:"fingerprint_id"`
 	Duration      int       `db:"duration" json:"duration"`
 	CreatedAt     time.Time `db:"created_at" json:"created_at"`
+	Part          int       `db:"part" json:"part"`
 	Vote          int       `db:"vote" json:"vote"`
 }
 

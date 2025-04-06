@@ -13,6 +13,7 @@ import {
   useUnmatchFingerprint,
   FingerprintAlgorithm,
   CriterionModifier,
+  useUpdateFingerprintPart,
 } from "src/graphql";
 import { usePagination, useQueryParams } from "src/hooks";
 import { ensureEnum } from "src/utils";
@@ -53,6 +54,7 @@ export const UserFingerprintsList: FC<Props> = ({
 
   const [showDelete, setShowDelete] = useState(false);
   const [deleteFingerprint] = useUnmatchFingerprint();
+  const [updatePart] = useUpdateFingerprintPart();
   const [params, setParams] = useQueryParams({
     sort: { name: "sort", type: "string", default: SceneSortEnum.DATE },
     dir: { name: "dir", type: "string", default: SortDirectionEnum.DESC },
@@ -62,7 +64,7 @@ export const UserFingerprintsList: FC<Props> = ({
   const direction = ensureEnum(SortDirectionEnum, params.dir);
 
   const { page, setPage } = usePagination();
-  const { loading, data } = useScenesWithFingerprints({
+  const { loading, data, refetch } = useScenesWithFingerprints({
     input: {
       page,
       per_page: perPage,
@@ -138,6 +140,32 @@ export const UserFingerprintsList: FC<Props> = ({
     setShowDelete(false);
   };
 
+  const handlePartChange = async (sceneId: string, fingerprintId: number) => {
+    const part = prompt("Part number");
+    if (part === null) return;
+
+    const partNum = parseInt(part, 10);
+    if (isNaN(partNum)) {
+      alert("Please enter a valid number");
+      return;
+    }
+
+    try {
+      await updatePart({
+        variables: {
+          scene_id: sceneId,
+          fingerprint_id: fingerprintId,
+          part: partNum,
+        },
+      });
+
+      await refetch();
+    } catch (error) {
+      alert("Failed to update part number. Please try again later.");
+      console.error("Error updating fingerprint part:", error);
+    }
+  };
+
   const deleteModal = showDelete && (
     <Modal
       message={`Are you sure you want to delete ${deletionCandidates.length} fingerprints? This operation cannot be undone.`}
@@ -175,6 +203,9 @@ export const UserFingerprintsList: FC<Props> = ({
                   key={scene.id}
                   scene={scene}
                   deleteFingerprints={deleteFingerprints}
+                  changeFingerprintPart={(fingerprintId) =>
+                    handlePartChange(scene.id, fingerprintId)
+                  }
                 />
               ))}
             </tbody>

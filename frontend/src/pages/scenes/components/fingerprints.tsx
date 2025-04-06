@@ -25,6 +25,7 @@ type MatchType = "submission" | "report";
 
 export const FingerprintTable: FC<Props> = ({ scene }) => {
   const addToast = useToast();
+  const hasParts = scene.fingerprints.some((f) => f.part > 0);
 
   const [unmatchFingerprint, { loading: unmatching }] = useUnmatchFingerprint();
 
@@ -89,6 +90,11 @@ export const FingerprintTable: FC<Props> = ({ scene }) => {
               <td>
                 <b>Duration</b>
               </td>
+              {hasParts && (
+                <td>
+                  <b>Part</b>
+                </td>
+              )}
               <td>
                 <b>Submissions</b>
               </td>
@@ -119,6 +125,9 @@ export const FingerprintTable: FC<Props> = ({ scene }) => {
                     {formatDuration(fingerprint.duration)}
                   </span>
                 </td>
+                {hasParts && (
+                  <td>{fingerprint.part > 0 ? fingerprint.part : ""}</td>
+                )}
                 <td>
                   {fingerprint.submissions}
                   {fingerprint.user_submitted &&
