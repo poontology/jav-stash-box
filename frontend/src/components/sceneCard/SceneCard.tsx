@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Card } from "react-bootstrap";
 import { faVideo } from "@fortawesome/free-solid-svg-icons";
 
-import { Scene, Studio } from "src/graphql";
+import { Scene, PerformerFragment, Studio } from "src/graphql";
 import {
   getImage,
   sceneHref,
@@ -20,14 +20,14 @@ import {
 
 type Performance = Pick<
   Scene,
-  | "id"
-  | "title"
-  | "images"
-  | "duration"
-  | "code"
-  | "release_date"
-  | "performers"
+  "id" | "title" | "images" | "duration" | "code" | "release_date"
 > & {
+  performers: {
+    performer: Pick<
+      PerformerFragment,
+      "name" | "disambiguation" | "deleted"
+    > & { id: string };
+  }[];
   studio?: Pick<Studio, "id" | "name"> | null;
 };
 
