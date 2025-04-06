@@ -32,9 +32,12 @@ enum FingerprintSubmissionType {
 }
 
 type Fingerprint {
+  id: Int!
   hash: String!
   algorithm: FingerprintAlgorithm!
   duration: Int!
+  "number of part if the official release consists of multiple files"
+  part: Int!
   "number of times this fingerprint has been submitted (excluding reports)"
   submissions: Int!
   "number of times this fingerprint has been reported"
@@ -66,6 +69,7 @@ input FingerprintEditInput {
   hash: String!
   algorithm: FingerprintAlgorithm!
   duration: Int!
+  part: Int!
   created: Time!
   submissions: Int @deprecated(reason: "Unused")
   updated: Time @deprecated(reason: "Unused")

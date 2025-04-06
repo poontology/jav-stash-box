@@ -5,9 +5,11 @@ query ScenesWithFingerprints($input: SceneQueryInput!, $submitted: Boolean!) {
     scenes {
       ...QuerySceneFragment
       fingerprints(is_submitted: $submitted) {
+        id
         hash
         algorithm
         duration
+        part
         submissions
         user_submitted
         created

@@ -339,6 +339,9 @@ export type Fingerprint = {
   created: Scalars["Time"]["output"];
   duration: Scalars["Int"]["output"];
   hash: Scalars["String"]["output"];
+  id: Scalars["Int"]["output"];
+  /** number of part if the official release consists of multiple files */
+  part: Scalars["Int"]["output"];
   /** number of times this fingerprint has been reported */
   reports: Scalars["Int"]["output"];
   /** number of times this fingerprint has been submitted (excluding reports) */
@@ -361,6 +364,7 @@ export type FingerprintEditInput = {
   created: Scalars["Time"]["input"];
   duration: Scalars["Int"]["input"];
   hash: Scalars["String"]["input"];
+  part: Scalars["Int"]["input"];
   /** @deprecated Unused */
   submissions?: InputMaybe<Scalars["Int"]["input"]>;
   /** @deprecated Unused */
@@ -538,6 +542,8 @@ export type Mutation = {
   favoritePerformer: Scalars["Boolean"]["output"];
   /** Favorite or unfavorite a studio */
   favoriteStudio: Scalars["Boolean"]["output"];
+  /** Update scene fingerprint with a part number */
+  fingerprintPartUpdate: Scalars["Boolean"]["output"];
   /** @deprecated Use generateInviteCodes */
   generateInviteCode?: Maybe<Scalars["ID"]["output"]>;
   /** Generates an invite code using an invite token */
@@ -647,6 +653,12 @@ export type MutationFavoritePerformerArgs = {
 export type MutationFavoriteStudioArgs = {
   favorite: Scalars["Boolean"]["input"];
   id: Scalars["ID"]["input"];
+};
+
+export type MutationFingerprintPartUpdateArgs = {
+  fingerprint_id: Scalars["Int"]["input"];
+  part: Scalars["Int"]["input"];
+  scene_id: Scalars["ID"]["input"];
 };
 
 export type MutationGenerateInviteCodesArgs = {
@@ -2276,9 +2288,11 @@ export type EditFragment = {
         }>;
         fingerprints: Array<{
           __typename: "Fingerprint";
+          id: number;
           hash: string;
           algorithm: FingerprintAlgorithm;
           duration: number;
+          part: number;
           submissions: number;
           reports: number;
           user_submitted: boolean;
@@ -3071,9 +3085,11 @@ export type EditFragment = {
         }>;
         fingerprints: Array<{
           __typename: "Fingerprint";
+          id: number;
           hash: string;
           algorithm: FingerprintAlgorithm;
           duration: number;
+          part: number;
           submissions: number;
           reports: number;
           user_submitted: boolean;
@@ -3279,9 +3295,11 @@ export type SceneFragment = {
   }>;
   fingerprints: Array<{
     __typename: "Fingerprint";
+    id: number;
     hash: string;
     algorithm: FingerprintAlgorithm;
     duration: number;
+    part: number;
     submissions: number;
     reports: number;
     user_submitted: boolean;
@@ -3650,9 +3668,11 @@ export type ApplyEditMutation = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -4500,9 +4520,11 @@ export type ApplyEditMutation = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -4919,9 +4941,11 @@ export type PerformerEditMutation = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -5769,9 +5793,11 @@ export type PerformerEditMutation = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -5980,9 +6006,11 @@ export type PerformerEditUpdateMutation = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -6830,9 +6858,11 @@ export type PerformerEditUpdateMutation = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -7085,9 +7115,11 @@ export type SceneEditMutation = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -7935,9 +7967,11 @@ export type SceneEditMutation = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -8146,9 +8180,11 @@ export type SceneEditUpdateMutation = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -8996,9 +9032,11 @@ export type SceneEditUpdateMutation = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -9206,9 +9244,11 @@ export type StudioEditMutation = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -10056,9 +10096,11 @@ export type StudioEditMutation = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -10267,9 +10309,11 @@ export type StudioEditUpdateMutation = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -11117,9 +11161,11 @@ export type StudioEditUpdateMutation = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -11327,9 +11373,11 @@ export type TagEditMutation = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -12177,9 +12225,11 @@ export type TagEditMutation = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -12388,9 +12438,11 @@ export type TagEditUpdateMutation = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -13238,9 +13290,11 @@ export type TagEditUpdateMutation = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -13319,6 +13373,17 @@ export type UnmatchFingerprintMutationVariables = Exact<{
 export type UnmatchFingerprintMutation = {
   __typename: "Mutation";
   unmatchFingerprint: boolean;
+};
+
+export type UpdateFingerprintMutationVariables = Exact<{
+  scene_id: Scalars["ID"]["input"];
+  fingerprint_id: Scalars["Int"]["input"];
+  part: Scalars["Int"]["input"];
+}>;
+
+export type UpdateFingerprintMutation = {
+  __typename: "Mutation";
+  fingerprintPartUpdate: boolean;
 };
 
 export type UpdateNotificationSubscriptionsMutationVariables = Exact<{
@@ -13603,9 +13668,11 @@ export type VoteMutation = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -14453,9 +14520,11 @@ export type VoteMutation = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -14920,9 +14989,11 @@ export type EditQuery = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -15770,9 +15841,11 @@ export type EditQuery = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -15974,9 +16047,11 @@ export type EditUpdateQuery = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -16435,9 +16510,11 @@ export type EditsQuery = {
             }>;
             fingerprints: Array<{
               __typename: "Fingerprint";
+              id: number;
               hash: string;
               algorithm: FingerprintAlgorithm;
               duration: number;
+              part: number;
               submissions: number;
               reports: number;
               user_submitted: boolean;
@@ -17305,9 +17382,11 @@ export type EditsQuery = {
             }>;
             fingerprints: Array<{
               __typename: "Fingerprint";
+              id: number;
               hash: string;
               algorithm: FingerprintAlgorithm;
               duration: number;
+              part: number;
               submissions: number;
               reports: number;
               user_submitted: boolean;
@@ -17803,9 +17882,11 @@ export type QueryExistingPerformerQuery = {
             }>;
             fingerprints: Array<{
               __typename: "Fingerprint";
+              id: number;
               hash: string;
               algorithm: FingerprintAlgorithm;
               duration: number;
+              part: number;
               submissions: number;
               reports: number;
               user_submitted: boolean;
@@ -18673,9 +18754,11 @@ export type QueryExistingPerformerQuery = {
             }>;
             fingerprints: Array<{
               __typename: "Fingerprint";
+              id: number;
               hash: string;
               algorithm: FingerprintAlgorithm;
               duration: number;
+              part: number;
               submissions: number;
               reports: number;
               user_submitted: boolean;
@@ -18797,9 +18880,11 @@ export type QueryExistingSceneQuery = {
       }>;
       fingerprints: Array<{
         __typename: "Fingerprint";
+        id: number;
         hash: string;
         algorithm: FingerprintAlgorithm;
         duration: number;
+        part: number;
         submissions: number;
         reports: number;
         user_submitted: boolean;
@@ -18952,9 +19037,11 @@ export type QueryExistingSceneQuery = {
             }>;
             fingerprints: Array<{
               __typename: "Fingerprint";
+              id: number;
               hash: string;
               algorithm: FingerprintAlgorithm;
               duration: number;
+              part: number;
               submissions: number;
               reports: number;
               user_submitted: boolean;
@@ -19822,9 +19909,11 @@ export type QueryExistingSceneQuery = {
             }>;
             fingerprints: Array<{
               __typename: "Fingerprint";
+              id: number;
               hash: string;
               algorithm: FingerprintAlgorithm;
               duration: number;
+              part: number;
               submissions: number;
               reports: number;
               user_submitted: boolean;
@@ -20032,9 +20121,11 @@ export type NotificationCommentFragment = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -20882,9 +20973,11 @@ export type NotificationCommentFragment = {
           }>;
           fingerprints: Array<{
             __typename: "Fingerprint";
+            id: number;
             hash: string;
             algorithm: FingerprintAlgorithm;
             duration: number;
+            part: number;
             submissions: number;
             reports: number;
             user_submitted: boolean;
@@ -21120,9 +21213,11 @@ export type NotificationsQuery = {
                       }>;
                       fingerprints: Array<{
                         __typename: "Fingerprint";
+                        id: number;
                         hash: string;
                         algorithm: FingerprintAlgorithm;
                         duration: number;
+                        part: number;
                         submissions: number;
                         reports: number;
                         user_submitted: boolean;
@@ -21994,9 +22089,11 @@ export type NotificationsQuery = {
                       }>;
                       fingerprints: Array<{
                         __typename: "Fingerprint";
+                        id: number;
                         hash: string;
                         algorithm: FingerprintAlgorithm;
                         duration: number;
+                        part: number;
                         submissions: number;
                         reports: number;
                         user_submitted: boolean;
@@ -22222,9 +22319,11 @@ export type NotificationsQuery = {
                       }>;
                       fingerprints: Array<{
                         __typename: "Fingerprint";
+                        id: number;
                         hash: string;
                         algorithm: FingerprintAlgorithm;
                         duration: number;
+                        part: number;
                         submissions: number;
                         reports: number;
                         user_submitted: boolean;
@@ -23096,9 +23195,11 @@ export type NotificationsQuery = {
                       }>;
                       fingerprints: Array<{
                         __typename: "Fingerprint";
+                        id: number;
                         hash: string;
                         algorithm: FingerprintAlgorithm;
                         duration: number;
+                        part: number;
                         submissions: number;
                         reports: number;
                         user_submitted: boolean;
@@ -23324,9 +23425,11 @@ export type NotificationsQuery = {
                       }>;
                       fingerprints: Array<{
                         __typename: "Fingerprint";
+                        id: number;
                         hash: string;
                         algorithm: FingerprintAlgorithm;
                         duration: number;
+                        part: number;
                         submissions: number;
                         reports: number;
                         user_submitted: boolean;
@@ -24198,9 +24301,11 @@ export type NotificationsQuery = {
                       }>;
                       fingerprints: Array<{
                         __typename: "Fingerprint";
+                        id: number;
                         hash: string;
                         algorithm: FingerprintAlgorithm;
                         duration: number;
+                        part: number;
                         submissions: number;
                         reports: number;
                         user_submitted: boolean;
@@ -24413,9 +24518,11 @@ export type NotificationsQuery = {
                     }>;
                     fingerprints: Array<{
                       __typename: "Fingerprint";
+                      id: number;
                       hash: string;
                       algorithm: FingerprintAlgorithm;
                       duration: number;
+                      part: number;
                       submissions: number;
                       reports: number;
                       user_submitted: boolean;
@@ -25287,9 +25394,11 @@ export type NotificationsQuery = {
                     }>;
                     fingerprints: Array<{
                       __typename: "Fingerprint";
+                      id: number;
                       hash: string;
                       algorithm: FingerprintAlgorithm;
                       duration: number;
+                      part: number;
                       submissions: number;
                       reports: number;
                       user_submitted: boolean;
@@ -25500,9 +25609,11 @@ export type NotificationsQuery = {
                     }>;
                     fingerprints: Array<{
                       __typename: "Fingerprint";
+                      id: number;
                       hash: string;
                       algorithm: FingerprintAlgorithm;
                       duration: number;
+                      part: number;
                       submissions: number;
                       reports: number;
                       user_submitted: boolean;
@@ -26374,9 +26485,11 @@ export type NotificationsQuery = {
                     }>;
                     fingerprints: Array<{
                       __typename: "Fingerprint";
+                      id: number;
                       hash: string;
                       algorithm: FingerprintAlgorithm;
                       duration: number;
+                      part: number;
                       submissions: number;
                       reports: number;
                       user_submitted: boolean;
@@ -26587,9 +26700,11 @@ export type NotificationsQuery = {
                     }>;
                     fingerprints: Array<{
                       __typename: "Fingerprint";
+                      id: number;
                       hash: string;
                       algorithm: FingerprintAlgorithm;
                       duration: number;
+                      part: number;
                       submissions: number;
                       reports: number;
                       user_submitted: boolean;
@@ -27461,9 +27576,11 @@ export type NotificationsQuery = {
                     }>;
                     fingerprints: Array<{
                       __typename: "Fingerprint";
+                      id: number;
                       hash: string;
                       algorithm: FingerprintAlgorithm;
                       duration: number;
+                      part: number;
                       submissions: number;
                       reports: number;
                       user_submitted: boolean;
@@ -27590,9 +27707,11 @@ export type NotificationsQuery = {
               }>;
               fingerprints: Array<{
                 __typename: "Fingerprint";
+                id: number;
                 hash: string;
                 algorithm: FingerprintAlgorithm;
                 duration: number;
+                part: number;
                 submissions: number;
                 reports: number;
                 user_submitted: boolean;
@@ -27748,9 +27867,11 @@ export type NotificationsQuery = {
                     }>;
                     fingerprints: Array<{
                       __typename: "Fingerprint";
+                      id: number;
                       hash: string;
                       algorithm: FingerprintAlgorithm;
                       duration: number;
+                      part: number;
                       submissions: number;
                       reports: number;
                       user_submitted: boolean;
@@ -28622,9 +28743,11 @@ export type NotificationsQuery = {
                     }>;
                     fingerprints: Array<{
                       __typename: "Fingerprint";
+                      id: number;
                       hash: string;
                       algorithm: FingerprintAlgorithm;
                       duration: number;
+                      part: number;
                       submissions: number;
                       reports: number;
                       user_submitted: boolean;
@@ -28751,9 +28874,11 @@ export type NotificationsQuery = {
               }>;
               fingerprints: Array<{
                 __typename: "Fingerprint";
+                id: number;
                 hash: string;
                 algorithm: FingerprintAlgorithm;
                 duration: number;
+                part: number;
                 submissions: number;
                 reports: number;
                 user_submitted: boolean;
@@ -28909,9 +29034,11 @@ export type NotificationsQuery = {
                     }>;
                     fingerprints: Array<{
                       __typename: "Fingerprint";
+                      id: number;
                       hash: string;
                       algorithm: FingerprintAlgorithm;
                       duration: number;
+                      part: number;
                       submissions: number;
                       reports: number;
                       user_submitted: boolean;
@@ -29783,9 +29910,11 @@ export type NotificationsQuery = {
                     }>;
                     fingerprints: Array<{
                       __typename: "Fingerprint";
+                      id: number;
                       hash: string;
                       algorithm: FingerprintAlgorithm;
                       duration: number;
+                      part: number;
                       submissions: number;
                       reports: number;
                       user_submitted: boolean;
@@ -29996,9 +30125,11 @@ export type NotificationsQuery = {
                     }>;
                     fingerprints: Array<{
                       __typename: "Fingerprint";
+                      id: number;
                       hash: string;
                       algorithm: FingerprintAlgorithm;
                       duration: number;
+                      part: number;
                       submissions: number;
                       reports: number;
                       user_submitted: boolean;
@@ -30870,9 +31001,11 @@ export type NotificationsQuery = {
                     }>;
                     fingerprints: Array<{
                       __typename: "Fingerprint";
+                      id: number;
                       hash: string;
                       algorithm: FingerprintAlgorithm;
                       duration: number;
+                      part: number;
                       submissions: number;
                       reports: number;
                       user_submitted: boolean;
@@ -30998,9 +31131,11 @@ export type SceneQuery = {
     }>;
     fingerprints: Array<{
       __typename: "Fingerprint";
+      id: number;
       hash: string;
       algorithm: FingerprintAlgorithm;
       duration: number;
+      part: number;
       submissions: number;
       reports: number;
       user_submitted: boolean;
@@ -31151,9 +31286,11 @@ export type ScenesWithFingerprintsQuery = {
       duration?: number | null;
       fingerprints: Array<{
         __typename: "Fingerprint";
+        id: number;
         hash: string;
         algorithm: FingerprintAlgorithm;
         duration: number;
+        part: number;
         submissions: number;
         user_submitted: boolean;
         created: string;
@@ -32393,9 +32530,11 @@ export const SceneFragmentDoc = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "hash" } },
                 { kind: "Field", name: { kind: "Name", value: "algorithm" } },
                 { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
@@ -34035,9 +34174,11 @@ export const EditFragmentDoc = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "hash" } },
                 { kind: "Field", name: { kind: "Name", value: "algorithm" } },
                 { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
@@ -34484,9 +34625,11 @@ export const NotificationCommentFragmentDoc = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "hash" } },
                 { kind: "Field", name: { kind: "Name", value: "algorithm" } },
                 { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
@@ -36654,9 +36797,11 @@ export const ApplyEditDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "hash" } },
                 { kind: "Field", name: { kind: "Name", value: "algorithm" } },
                 { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
@@ -39239,9 +39384,11 @@ export const PerformerEditDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "hash" } },
                 { kind: "Field", name: { kind: "Name", value: "algorithm" } },
                 { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
@@ -40882,9 +41029,11 @@ export const PerformerEditUpdateDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "hash" } },
                 { kind: "Field", name: { kind: "Name", value: "algorithm" } },
                 { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
@@ -42711,9 +42860,11 @@ export const SceneEditDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "hash" } },
                 { kind: "Field", name: { kind: "Name", value: "algorithm" } },
                 { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
@@ -44351,9 +44502,11 @@ export const SceneEditUpdateDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "hash" } },
                 { kind: "Field", name: { kind: "Name", value: "algorithm" } },
                 { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
@@ -45978,9 +46131,11 @@ export const StudioEditDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "hash" } },
                 { kind: "Field", name: { kind: "Name", value: "algorithm" } },
                 { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
@@ -47618,9 +47773,11 @@ export const StudioEditUpdateDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "hash" } },
                 { kind: "Field", name: { kind: "Name", value: "algorithm" } },
                 { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
@@ -49245,9 +49402,11 @@ export const TagEditDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "hash" } },
                 { kind: "Field", name: { kind: "Name", value: "algorithm" } },
                 { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
@@ -50885,9 +51044,11 @@ export const TagEditUpdateDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "hash" } },
                 { kind: "Field", name: { kind: "Name", value: "algorithm" } },
                 { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
@@ -52225,6 +52386,86 @@ export const UnmatchFingerprintDocument = {
   UnmatchFingerprintMutation,
   UnmatchFingerprintMutationVariables
 >;
+export const UpdateFingerprintDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateFingerprint" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "scene_id" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "fingerprint_id" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "part" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "fingerprintPartUpdate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "scene_id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "scene_id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "fingerprint_id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "fingerprint_id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "part" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "part" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateFingerprintMutation,
+  UpdateFingerprintMutationVariables
+>;
 export const UpdateNotificationSubscriptionsDocument = {
   kind: "Document",
   definitions: [
@@ -53247,9 +53488,11 @@ export const VoteDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "hash" } },
                 { kind: "Field", name: { kind: "Name", value: "algorithm" } },
                 { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
@@ -55732,9 +55975,11 @@ export const EditDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "hash" } },
                 { kind: "Field", name: { kind: "Name", value: "algorithm" } },
                 { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
@@ -57943,9 +58188,11 @@ export const EditUpdateDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "hash" } },
                 { kind: "Field", name: { kind: "Name", value: "algorithm" } },
                 { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
@@ -58421,9 +58668,11 @@ export const EditsDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "hash" } },
                 { kind: "Field", name: { kind: "Name", value: "algorithm" } },
                 { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
@@ -60930,9 +61179,11 @@ export const QueryExistingPerformerDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "hash" } },
                 { kind: "Field", name: { kind: "Name", value: "algorithm" } },
                 { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
@@ -62579,9 +62830,11 @@ export const QueryExistingSceneDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "hash" } },
                 { kind: "Field", name: { kind: "Name", value: "algorithm" } },
                 { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
@@ -64565,9 +64818,11 @@ export const NotificationsDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "hash" } },
                 { kind: "Field", name: { kind: "Name", value: "algorithm" } },
                 { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
@@ -66007,9 +66262,11 @@ export const SceneDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "hash" } },
                 { kind: "Field", name: { kind: "Name", value: "algorithm" } },
                 { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
@@ -66752,6 +67009,10 @@ export const ScenesWithFingerprintsDocument = {
                           selections: [
                             {
                               kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
                               name: { kind: "Name", value: "hash" },
                             },
                             {
@@ -66761,6 +67022,10 @@ export const ScenesWithFingerprintsDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "duration" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "part" },
                             },
                             {
                               kind: "Field",
