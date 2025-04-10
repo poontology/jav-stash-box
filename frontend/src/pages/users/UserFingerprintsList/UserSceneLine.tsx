@@ -18,14 +18,9 @@ interface Props {
       duration: number;
     }[],
   ) => void;
-  changeFingerprintPart: (fingerprintId: number) => void;
 }
 
-const UserSceneLine: FC<Props> = ({
-  scene,
-  deleteFingerprints,
-  changeFingerprintPart,
-}) => (
+const UserSceneLine: FC<Props> = ({ scene, deleteFingerprints }) => (
   <>
     <tr key={scene.id}>
       <td>
@@ -68,11 +63,11 @@ const UserSceneLine: FC<Props> = ({
         <ul>
           {scene.fingerprints.map((fp) => (
             <UserFingerprint
+              scene_id={scene.id}
               fingerprint={fp}
               deleteFingerprint={() =>
                 deleteFingerprints([{ ...fp, scene_id: scene.id }])
               }
-              changeFingerprintPart={() => changeFingerprintPart(fp.id)}
               key={fp.hash}
             />
           ))}

@@ -3,26 +3,25 @@ import { Button } from "react-bootstrap";
 import { FingerprintAlgorithm } from "src/graphql";
 import { Icon } from "src/components/fragments";
 import { formatDuration } from "src/utils";
-import {
-  faTimesCircle,
-  faVideoCamera,
-} from "@fortawesome/free-solid-svg-icons";
+import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import { FingerprintPart } from "src/pages/scenes/components/fingerprintPart";
 
 interface Props {
+  scene_id: string;
   fingerprint: {
+    id: number;
     hash: string;
     duration: number;
     algorithm: FingerprintAlgorithm;
     part: number;
   };
   deleteFingerprint: () => void;
-  changeFingerprintPart: () => void;
 }
 
 export const UserFingerprint: FC<Props> = ({
+  scene_id,
   fingerprint,
   deleteFingerprint,
-  changeFingerprintPart,
 }) => (
   <li>
     <div key={fingerprint.hash}>
@@ -36,17 +35,14 @@ export const UserFingerprint: FC<Props> = ({
       </Button>
       <b className="me-2">{fingerprint.algorithm}</b>
       {fingerprint.hash} ({formatDuration(fingerprint.duration)})
-      <Button
-        className="text-danger ms-2"
-        title="Submitted by you - click to change part"
-        onClick={changeFingerprintPart}
-        variant="link"
-      >
-        <Icon icon={faVideoCamera} />
-      </Button>
-      {fingerprint.part !== -1 && (
-        <span className="ms-2">Part: {fingerprint.part}</span>
-      )}
+      <span className="ms-2">
+        <FingerprintPart
+          sceneId={scene_id}
+          fingerprintId={fingerprint.id}
+          currentPart={fingerprint.part}
+        />
+        {fingerprint.part !== -1 && `Part: ${fingerprint.part}`}
+      </span>
     </div>
   </li>
 );

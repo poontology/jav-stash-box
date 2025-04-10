@@ -13,6 +13,7 @@ import { useToast } from "src/hooks";
 import { createHref, formatDate, formatDuration } from "src/utils";
 import { ROUTE_SCENES } from "src/constants/route";
 import { Icon } from "src/components/fragments";
+import { FingerprintPart } from "./fingerprintPart";
 
 interface Props {
   scene: {
@@ -126,7 +127,14 @@ export const FingerprintTable: FC<Props> = ({ scene }) => {
                   </span>
                 </td>
                 {hasParts && (
-                  <td>{fingerprint.part > 0 ? fingerprint.part : ""}</td>
+                  <td>
+                    {fingerprint.part > 0 && fingerprint.part}
+                    <FingerprintPart
+                      sceneId={scene.id}
+                      fingerprintId={fingerprint.id}
+                      currentPart={fingerprint.part}
+                    />
+                  </td>
                 )}
                 <td>
                   {fingerprint.submissions}
