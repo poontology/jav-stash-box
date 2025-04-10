@@ -259,24 +259,24 @@ func (qb *sceneQueryBuilder) FindByIds(ids []uuid.UUID) ([]*models.Scene, []erro
 	return result, utils.DuplicateError(nil, len(ids))
 }
 
-func (qb *sceneQueryBuilder) FindIdsBySceneFingerprints(fingerprints []*models.FingerprintQueryInput) (map[string][]uuid.UUID, error) {
+func (qb *sceneQueryBuilder) FindIdsBySceneFingerprints(fingerprints []*models.FingerprintQueryInput) (map[string][]uuid.UUID, map[uuid.UUID]int, error) {
 	hashClause := `
-		SELECT scene_id, hash
+		SELECT scene_id, hash, SFP.part
 		FROM fingerprints FP
 		JOIN scene_fingerprints SFP ON FP.id = SFP.fingerprint_id
 		JOIN scenes ON scene_id = scenes.id
 		WHERE hash IN (:hashes) AND deleted = FALSE
-		GROUP BY scene_id, hash
+		GROUP BY scene_id, hash, SFP.part
 	`
 	phashClause := `
-		SELECT scene_id, to_hex(phash::::bigint) as hash
+		SELECT scene_id, to_hex(phash::::bigint) as hash, SFP.part
 		FROM UNNEST(ARRAY[:phashes]) phash
 		JOIN fingerprints FP ON ('x' || hash)::::bit(64)::::bigint <@ (phash::::BIGINT, :distance)
 		AND algorithm = 'PHASH'
 		JOIN scene_fingerprints SFP ON FP.id = SFP.fingerprint_id
 		JOIN scenes ON scene_id = scenes.id
 		WHERE deleted = FALSE
-		GROUP BY scene_id, phash
+		GROUP BY scene_id, phash, SFP.part
 	`
 
 	distance := config.GetPHashDistance()
@@ -304,7 +304,7 @@ func (qb *sceneQueryBuilder) FindIdsBySceneFingerprints(fingerprints []*models.F
 		clauses = append(clauses, hashClause)
 	}
 	if len(clauses) == 0 {
-		return nil, nil
+		return nil, nil, nil
 	}
 
 	arg := map[string]interface{}{
@@ -316,27 +316,31 @@ func (qb *sceneQueryBuilder) FindIdsBySceneFingerprints(fingerprints []*models.F
 	query := strings.Join(clauses, " UNION ")
 	query, args, err := sqlx.Named(query, arg)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	query, args, err = sqlx.In(query, args...)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	query = qb.dbi.db().Rebind(query)
 
 	output := models.SceneFingerprints{}
 	if err := qb.dbi.db().SelectContext(qb.dbi.txn.ctx, &output, query, args...); err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	res := make(map[string][]uuid.UUID)
+	resPart := make(map[uuid.UUID]int)
 	output.Each(func(row interface{}) {
 		fp := row.(models.SceneFingerprint)
 		res[fp.Hash] = append(res[fp.Hash], fp.SceneID)
+		if fp.Part > 0 {
+			resPart[fp.SceneID] = fp.Part
+		}
 	})
 
-	return res, nil
+	return res, resPart, nil
 }
 
 func (qb *sceneQueryBuilder) Count() (int, error) {

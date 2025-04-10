@@ -3,6 +3,8 @@ package api
 import (
 	"context"
 	"errors"
+	"strconv"
+	"strings"
 
 	"github.com/gofrs/uuid"
 
@@ -75,7 +77,7 @@ func (r *queryResolver) FindScenesBySceneFingerprints(ctx context.Context, scene
 	}
 
 	// Find ids for all scenes matching a fingerprint
-	sceneIDs, err := qb.FindIdsBySceneFingerprints(fingerprints)
+	sceneIDs, sceneParts, err := qb.FindIdsBySceneFingerprints(fingerprints)
 	if err != nil {
 		return nil, err
 	}
@@ -96,6 +98,13 @@ func (r *queryResolver) FindScenesBySceneFingerprints(ctx context.Context, scene
 	}
 	sceneMap := make(map[uuid.UUID]*models.Scene)
 	for _, scene := range scenes {
+		if scene.Title.Valid && sceneParts[scene.ID] > 0 {
+			partStr := " (part " + strconv.Itoa(sceneParts[scene.ID]) + ")"
+			if !strings.HasSuffix(scene.Title.String, partStr) {
+				scene.Title.String += partStr
+			}
+		}
+
 		sceneMap[scene.ID] = scene
 	}
 
