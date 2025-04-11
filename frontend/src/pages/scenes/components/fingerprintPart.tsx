@@ -43,7 +43,11 @@ export const FingerprintPart: FC<Props> = ({
 
       onPartChange?.();
     } catch (error) {
-      alert("Failed to update part number. Please try again later.");
+      alert(
+        error instanceof Error
+          ? "Error: " + error.message
+          : "Failed to update part number. Please try again later.",
+      );
       console.error("Error updating fingerprint part:", error);
     }
   };

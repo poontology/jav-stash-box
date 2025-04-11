@@ -129,11 +129,13 @@ export const FingerprintTable: FC<Props> = ({ scene }) => {
                 {hasParts && (
                   <td>
                     {fingerprint.part > 0 && fingerprint.part}
-                    <FingerprintPart
-                      sceneId={scene.id}
-                      fingerprintId={fingerprint.id}
-                      currentPart={fingerprint.part}
-                    />
+                    {fingerprint.user_submitted && (
+                      <FingerprintPart
+                        sceneId={scene.id}
+                        fingerprintId={fingerprint.id}
+                        currentPart={fingerprint.part}
+                      />
+                    )}
                   </td>
                 )}
                 <td>
