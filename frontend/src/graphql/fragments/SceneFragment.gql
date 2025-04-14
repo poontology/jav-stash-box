@@ -32,9 +32,11 @@ fragment SceneFragment on Scene {
     }
   }
   fingerprints {
+    id
     hash
     algorithm
     duration
+    part
     submissions
     reports
     user_submitted

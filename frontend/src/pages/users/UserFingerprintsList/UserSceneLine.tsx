@@ -63,6 +63,7 @@ const UserSceneLine: FC<Props> = ({ scene, deleteFingerprints }) => (
         <ul>
           {scene.fingerprints.map((fp) => (
             <UserFingerprint
+              scene_id={scene.id}
               fingerprint={fp}
               deleteFingerprint={() =>
                 deleteFingerprints([{ ...fp, scene_id: scene.id }])

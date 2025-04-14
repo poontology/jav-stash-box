@@ -140,6 +140,9 @@ import {
   MarkNotificationReadDocument,
   MarkNotificationReadMutationVariables,
   MeQuery,
+  UpdateFingerprintDocument,
+  UpdateFingerprintMutation,
+  UpdateFingerprintMutationVariables,
 } from "../types";
 
 export const useActivateUser = (
@@ -414,6 +417,24 @@ export const useUnmatchFingerprint = (
           id: cache.identify({ __typename: "Scene", id: variables?.scene_id }),
           fieldName: "fingerprints",
         });
+    },
+    ...options,
+  });
+
+export const useUpdateFingerprintPart = (
+  options?: MutationHookOptions<
+    UpdateFingerprintMutation,
+    UpdateFingerprintMutationVariables
+  >,
+) =>
+  useMutation(UpdateFingerprintDocument, {
+    update(cache, { data }, { variables }) {
+      if (data?.fingerprintPartUpdate) {
+        cache.evict({
+          id: cache.identify({ __typename: "Scene", id: variables?.scene_id }),
+          fieldName: "fingerprints",
+        });
+      }
     },
     ...options,
   });

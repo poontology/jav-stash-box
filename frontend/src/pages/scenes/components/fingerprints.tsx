@@ -9,10 +9,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { Fingerprint, useUnmatchFingerprint } from "src/graphql";
-import { useToast } from "src/hooks";
+import { useCurrentUser, useToast } from "src/hooks";
 import { createHref, formatDate, formatDuration } from "src/utils";
 import { ROUTE_SCENES } from "src/constants/route";
 import { Icon } from "src/components/fragments";
+import { FingerprintPart } from "./fingerprintPart";
 
 interface Props {
   scene: {
@@ -24,6 +25,7 @@ interface Props {
 type MatchType = "submission" | "report";
 
 export const FingerprintTable: FC<Props> = ({ scene }) => {
+  const { isAdmin } = useCurrentUser();
   const addToast = useToast();
 
   const [unmatchFingerprint, { loading: unmatching }] = useUnmatchFingerprint();
@@ -90,6 +92,9 @@ export const FingerprintTable: FC<Props> = ({ scene }) => {
                 <b>Duration</b>
               </td>
               <td>
+                <b>Part</b>
+              </td>
+              <td>
                 <b>Submissions</b>
               </td>
               <td>
@@ -118,6 +123,16 @@ export const FingerprintTable: FC<Props> = ({ scene }) => {
                   <span title={`${fingerprint.duration}s`}>
                     {formatDuration(fingerprint.duration)}
                   </span>
+                </td>
+                <td>
+                  {fingerprint.part > 0 && fingerprint.part}
+                  {(isAdmin || fingerprint.user_submitted) && (
+                    <FingerprintPart
+                      sceneId={scene.id}
+                      fingerprintId={fingerprint.id}
+                      currentPart={fingerprint.part}
+                    />
+                  )}
                 </td>
                 <td>
                   {fingerprint.submissions}
