@@ -100,8 +100,13 @@ func (qb *sceneQueryBuilder) CreateOrReplaceFingerprints(sceneFingerprints model
 			SceneID:       fp.SceneID,
 			UserID:        fp.UserID,
 			Duration:      fp.Duration,
-			Part:          fp.Part,
-			Vote:          fp.Vote,
+			Part: func() sql.NullInt64 {
+				if fp.Part != nil {
+					return sql.NullInt64{Int64: int64(*fp.Part), Valid: true}
+				}
+				return sql.NullInt64{Valid: false}
+			}(),
+			Vote: fp.Vote,
 		})
 	}
 
@@ -335,8 +340,8 @@ func (qb *sceneQueryBuilder) FindIdsBySceneFingerprints(fingerprints []*models.F
 	output.Each(func(row interface{}) {
 		fp := row.(models.SceneFingerprint)
 		res[fp.Hash] = append(res[fp.Hash], fp.SceneID)
-		if fp.Part > 0 {
-			resPart[fp.SceneID] = fp.Part
+		if fp.Part != nil && *fp.Part > 0 {
+			resPart[fp.SceneID] = *fp.Part
 		}
 	})
 
@@ -592,7 +597,7 @@ type sceneFingerprintGroup struct {
 	Hash           string                      `db:"hash"`
 	Algorithm      models.FingerprintAlgorithm `db:"algorithm"`
 	Duration       float64                     `db:"duration"`
-	Part           int                         `db:"part"`
+	Part           *int                        `db:"part"`
 	Submissions    int                         `db:"submissions"`
 	Reports        int                         `db:"reports"`
 	NetSubmissions int                         `db:"net_submissions"`

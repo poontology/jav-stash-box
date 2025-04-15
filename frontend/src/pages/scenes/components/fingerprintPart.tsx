@@ -7,7 +7,7 @@ import { useUpdateFingerprintPart } from "src/graphql";
 interface Props {
   sceneId: string;
   fingerprintId: number;
-  currentPart: number;
+  currentPart: number | null;
   onPartChange?: () => void;
 }
 
@@ -19,10 +19,10 @@ export const FingerprintPart: FC<Props> = ({
 }) => {
   const [updatePart] = useUpdateFingerprintPart();
 
-  const handlePartChange = async (newPart?: number) => {
+  const handlePartChange = async (newPart?: number | null) => {
     let partNum = newPart;
 
-    if (!partNum) {
+    if (partNum === undefined) {
       const part = prompt("Part number");
       if (part === null) return;
       partNum = parseInt(part, 10);
@@ -37,7 +37,7 @@ export const FingerprintPart: FC<Props> = ({
         variables: {
           scene_id: sceneId,
           fingerprint_id: fingerprintId,
-          part: partNum,
+          part: partNum || null,
         },
       });
 
@@ -53,19 +53,19 @@ export const FingerprintPart: FC<Props> = ({
   };
 
   const handleClick = () => {
-    if (currentPart === -1) {
+    if (currentPart === null) {
       handlePartChange();
     } else if (
       window.confirm("Are you sure you want to remove the part number?")
     ) {
-      handlePartChange(-1);
+      handlePartChange(null);
     }
   };
 
   return (
     <Button
-      className={currentPart === -1 ? "text-success" : "text-danger"}
-      title={currentPart === -1 ? "Set part number" : "Remove part number"}
+      className={currentPart === null ? "text-success" : "text-danger"}
+      title={currentPart === null ? "Set part number" : "Remove part number"}
       onClick={handleClick}
       variant="link"
     >

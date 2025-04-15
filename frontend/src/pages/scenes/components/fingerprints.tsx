@@ -125,12 +125,12 @@ export const FingerprintTable: FC<Props> = ({ scene }) => {
                   </span>
                 </td>
                 <td>
-                  {fingerprint.part > 0 && fingerprint.part}
+                  {fingerprint.part}
                   {(isAdmin || fingerprint.user_submitted) && (
                     <FingerprintPart
                       sceneId={scene.id}
                       fingerprintId={fingerprint.id}
-                      currentPart={fingerprint.part}
+                      currentPart={fingerprint.part ?? null}
                     />
                   )}
                 </td>
