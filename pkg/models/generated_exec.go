@@ -187,6 +187,7 @@ type ComplexityRoot struct {
 		Reports       func(childComplexity int) int
 		Submissions   func(childComplexity int) int
 		Updated       func(childComplexity int) int
+		UserPartSet   func(childComplexity int) int
 		UserReported  func(childComplexity int) int
 		UserSubmitted func(childComplexity int) int
 	}
@@ -1458,6 +1459,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Fingerprint.Updated(childComplexity), true
+
+	case "Fingerprint.user_part_set":
+		if e.complexity.Fingerprint.UserPartSet == nil {
+			break
+		}
+
+		return e.complexity.Fingerprint.UserPartSet(childComplexity), true
 
 	case "Fingerprint.user_reported":
 		if e.complexity.Fingerprint.UserReported == nil {
@@ -5587,6 +5595,8 @@ type Fingerprint {
   reports: Int!
   created: Time!
   updated: Time!
+  "true if the current user set the part number"
+  user_part_set: Boolean!
   "true if the current user submitted this fingerprint"
   user_submitted: Boolean!
   "true if the current user reported this fingerprint"
@@ -12826,6 +12836,50 @@ func (ec *executionContext) fieldContext_Fingerprint_updated(_ context.Context, 
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Fingerprint_user_part_set(ctx context.Context, field graphql.CollectedField, obj *Fingerprint) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Fingerprint_user_part_set(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UserPartSet, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Fingerprint_user_part_set(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Fingerprint",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
 		},
 	}
 	return fc, nil
@@ -28925,6 +28979,8 @@ func (ec *executionContext) fieldContext_Scene_fingerprints(ctx context.Context,
 				return ec.fieldContext_Fingerprint_created(ctx, field)
 			case "updated":
 				return ec.fieldContext_Fingerprint_updated(ctx, field)
+			case "user_part_set":
+				return ec.fieldContext_Fingerprint_user_part_set(ctx, field)
 			case "user_submitted":
 				return ec.fieldContext_Fingerprint_user_submitted(ctx, field)
 			case "user_reported":
@@ -30550,6 +30606,8 @@ func (ec *executionContext) fieldContext_SceneEdit_added_fingerprints(_ context.
 				return ec.fieldContext_Fingerprint_created(ctx, field)
 			case "updated":
 				return ec.fieldContext_Fingerprint_updated(ctx, field)
+			case "user_part_set":
+				return ec.fieldContext_Fingerprint_user_part_set(ctx, field)
 			case "user_submitted":
 				return ec.fieldContext_Fingerprint_user_submitted(ctx, field)
 			case "user_reported":
@@ -30615,6 +30673,8 @@ func (ec *executionContext) fieldContext_SceneEdit_removed_fingerprints(_ contex
 				return ec.fieldContext_Fingerprint_created(ctx, field)
 			case "updated":
 				return ec.fieldContext_Fingerprint_updated(ctx, field)
+			case "user_part_set":
+				return ec.fieldContext_Fingerprint_user_part_set(ctx, field)
 			case "user_submitted":
 				return ec.fieldContext_Fingerprint_user_submitted(ctx, field)
 			case "user_reported":
@@ -31067,6 +31127,8 @@ func (ec *executionContext) fieldContext_SceneEdit_fingerprints(_ context.Contex
 				return ec.fieldContext_Fingerprint_created(ctx, field)
 			case "updated":
 				return ec.fieldContext_Fingerprint_updated(ctx, field)
+			case "user_part_set":
+				return ec.fieldContext_Fingerprint_user_part_set(ctx, field)
 			case "user_submitted":
 				return ec.fieldContext_Fingerprint_user_submitted(ctx, field)
 			case "user_reported":
@@ -43971,6 +44033,11 @@ func (ec *executionContext) _Fingerprint(ctx context.Context, sel ast.SelectionS
 			}
 		case "updated":
 			out.Values[i] = ec._Fingerprint_updated(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "user_part_set":
+			out.Values[i] = ec._Fingerprint_user_part_set(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}

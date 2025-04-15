@@ -601,6 +601,7 @@ type sceneFingerprintGroup struct {
 	Submissions    int                         `db:"submissions"`
 	Reports        int                         `db:"reports"`
 	NetSubmissions int                         `db:"net_submissions"`
+	UserPartSet    bool                        `db:"user_part_set"`
 	UserSubmitted  bool                        `db:"user_submitted"`
 	UserReported   bool                        `db:"user_reported"`
 	CreatedAt      time.Time                   `db:"created_at"`
@@ -616,6 +617,7 @@ func fingerprintGroupToFingerprint(fpg sceneFingerprintGroup) *models.Fingerprin
 		Part:          fpg.Part,
 		Submissions:   fpg.Submissions,
 		Reports:       fpg.Reports,
+		UserPartSet:   fpg.UserPartSet,
 		UserSubmitted: fpg.UserSubmitted,
 		UserReported:  fpg.UserReported,
 		Created:       fpg.CreatedAt,
@@ -648,6 +650,7 @@ func (qb *sceneQueryBuilder) GetAllFingerprints(currentUserID uuid.UUID, ids []u
 			SUM(SFP.vote) as net_submissions,
 			MIN(created_at) as created_at,
 			MAX(created_at) as updated_at,
+			bool_or(SFP.user_id = :userid AND SFP.part IS NOT NULL) as user_part_set,
 			bool_or(SFP.user_id = :userid AND SFP.vote = 1) as user_submitted,
 			bool_or(SFP.user_id = :userid AND SFP.vote = -1) as user_reported
 		FROM scene_fingerprints SFP

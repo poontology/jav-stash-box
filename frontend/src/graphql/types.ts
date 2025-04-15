@@ -347,6 +347,8 @@ export type Fingerprint = {
   /** number of times this fingerprint has been submitted (excluding reports) */
   submissions: Scalars["Int"]["output"];
   updated: Scalars["Time"]["output"];
+  /** true if the current user set the part number */
+  user_part_set: Scalars["Boolean"]["output"];
   /** true if the current user reported this fingerprint */
   user_reported: Scalars["Boolean"]["output"];
   /** true if the current user submitted this fingerprint */
@@ -2295,6 +2297,7 @@ export type EditFragment = {
           part?: number | null;
           submissions: number;
           reports: number;
+          user_part_set: boolean;
           user_submitted: boolean;
           user_reported: boolean;
           created: string;
@@ -3092,6 +3095,7 @@ export type EditFragment = {
           part?: number | null;
           submissions: number;
           reports: number;
+          user_part_set: boolean;
           user_submitted: boolean;
           user_reported: boolean;
           created: string;
@@ -3302,6 +3306,7 @@ export type SceneFragment = {
     part?: number | null;
     submissions: number;
     reports: number;
+    user_part_set: boolean;
     user_submitted: boolean;
     user_reported: boolean;
     created: string;
@@ -3675,6 +3680,7 @@ export type ApplyEditMutation = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -4527,6 +4533,7 @@ export type ApplyEditMutation = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -4948,6 +4955,7 @@ export type PerformerEditMutation = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -5800,6 +5808,7 @@ export type PerformerEditMutation = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -6013,6 +6022,7 @@ export type PerformerEditUpdateMutation = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -6865,6 +6875,7 @@ export type PerformerEditUpdateMutation = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -7122,6 +7133,7 @@ export type SceneEditMutation = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -7974,6 +7986,7 @@ export type SceneEditMutation = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -8187,6 +8200,7 @@ export type SceneEditUpdateMutation = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -9039,6 +9053,7 @@ export type SceneEditUpdateMutation = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -9251,6 +9266,7 @@ export type StudioEditMutation = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -10103,6 +10119,7 @@ export type StudioEditMutation = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -10316,6 +10333,7 @@ export type StudioEditUpdateMutation = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -11168,6 +11186,7 @@ export type StudioEditUpdateMutation = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -11380,6 +11399,7 @@ export type TagEditMutation = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -12232,6 +12252,7 @@ export type TagEditMutation = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -12445,6 +12466,7 @@ export type TagEditUpdateMutation = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -13297,6 +13319,7 @@ export type TagEditUpdateMutation = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -13675,6 +13698,7 @@ export type VoteMutation = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -14527,6 +14551,7 @@ export type VoteMutation = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -14996,6 +15021,7 @@ export type EditQuery = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -15848,6 +15874,7 @@ export type EditQuery = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -16054,6 +16081,7 @@ export type EditUpdateQuery = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -16517,6 +16545,7 @@ export type EditsQuery = {
               part?: number | null;
               submissions: number;
               reports: number;
+              user_part_set: boolean;
               user_submitted: boolean;
               user_reported: boolean;
               created: string;
@@ -17389,6 +17418,7 @@ export type EditsQuery = {
               part?: number | null;
               submissions: number;
               reports: number;
+              user_part_set: boolean;
               user_submitted: boolean;
               user_reported: boolean;
               created: string;
@@ -17889,6 +17919,7 @@ export type QueryExistingPerformerQuery = {
               part?: number | null;
               submissions: number;
               reports: number;
+              user_part_set: boolean;
               user_submitted: boolean;
               user_reported: boolean;
               created: string;
@@ -18761,6 +18792,7 @@ export type QueryExistingPerformerQuery = {
               part?: number | null;
               submissions: number;
               reports: number;
+              user_part_set: boolean;
               user_submitted: boolean;
               user_reported: boolean;
               created: string;
@@ -18887,6 +18919,7 @@ export type QueryExistingSceneQuery = {
         part?: number | null;
         submissions: number;
         reports: number;
+        user_part_set: boolean;
         user_submitted: boolean;
         user_reported: boolean;
         created: string;
@@ -19044,6 +19077,7 @@ export type QueryExistingSceneQuery = {
               part?: number | null;
               submissions: number;
               reports: number;
+              user_part_set: boolean;
               user_submitted: boolean;
               user_reported: boolean;
               created: string;
@@ -19916,6 +19950,7 @@ export type QueryExistingSceneQuery = {
               part?: number | null;
               submissions: number;
               reports: number;
+              user_part_set: boolean;
               user_submitted: boolean;
               user_reported: boolean;
               created: string;
@@ -20128,6 +20163,7 @@ export type NotificationCommentFragment = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -20980,6 +21016,7 @@ export type NotificationCommentFragment = {
             part?: number | null;
             submissions: number;
             reports: number;
+            user_part_set: boolean;
             user_submitted: boolean;
             user_reported: boolean;
             created: string;
@@ -21220,6 +21257,7 @@ export type NotificationsQuery = {
                         part?: number | null;
                         submissions: number;
                         reports: number;
+                        user_part_set: boolean;
                         user_submitted: boolean;
                         user_reported: boolean;
                         created: string;
@@ -22096,6 +22134,7 @@ export type NotificationsQuery = {
                         part?: number | null;
                         submissions: number;
                         reports: number;
+                        user_part_set: boolean;
                         user_submitted: boolean;
                         user_reported: boolean;
                         created: string;
@@ -22326,6 +22365,7 @@ export type NotificationsQuery = {
                         part?: number | null;
                         submissions: number;
                         reports: number;
+                        user_part_set: boolean;
                         user_submitted: boolean;
                         user_reported: boolean;
                         created: string;
@@ -23202,6 +23242,7 @@ export type NotificationsQuery = {
                         part?: number | null;
                         submissions: number;
                         reports: number;
+                        user_part_set: boolean;
                         user_submitted: boolean;
                         user_reported: boolean;
                         created: string;
@@ -23432,6 +23473,7 @@ export type NotificationsQuery = {
                         part?: number | null;
                         submissions: number;
                         reports: number;
+                        user_part_set: boolean;
                         user_submitted: boolean;
                         user_reported: boolean;
                         created: string;
@@ -24308,6 +24350,7 @@ export type NotificationsQuery = {
                         part?: number | null;
                         submissions: number;
                         reports: number;
+                        user_part_set: boolean;
                         user_submitted: boolean;
                         user_reported: boolean;
                         created: string;
@@ -24525,6 +24568,7 @@ export type NotificationsQuery = {
                       part?: number | null;
                       submissions: number;
                       reports: number;
+                      user_part_set: boolean;
                       user_submitted: boolean;
                       user_reported: boolean;
                       created: string;
@@ -25401,6 +25445,7 @@ export type NotificationsQuery = {
                       part?: number | null;
                       submissions: number;
                       reports: number;
+                      user_part_set: boolean;
                       user_submitted: boolean;
                       user_reported: boolean;
                       created: string;
@@ -25616,6 +25661,7 @@ export type NotificationsQuery = {
                       part?: number | null;
                       submissions: number;
                       reports: number;
+                      user_part_set: boolean;
                       user_submitted: boolean;
                       user_reported: boolean;
                       created: string;
@@ -26492,6 +26538,7 @@ export type NotificationsQuery = {
                       part?: number | null;
                       submissions: number;
                       reports: number;
+                      user_part_set: boolean;
                       user_submitted: boolean;
                       user_reported: boolean;
                       created: string;
@@ -26707,6 +26754,7 @@ export type NotificationsQuery = {
                       part?: number | null;
                       submissions: number;
                       reports: number;
+                      user_part_set: boolean;
                       user_submitted: boolean;
                       user_reported: boolean;
                       created: string;
@@ -27583,6 +27631,7 @@ export type NotificationsQuery = {
                       part?: number | null;
                       submissions: number;
                       reports: number;
+                      user_part_set: boolean;
                       user_submitted: boolean;
                       user_reported: boolean;
                       created: string;
@@ -27714,6 +27763,7 @@ export type NotificationsQuery = {
                 part?: number | null;
                 submissions: number;
                 reports: number;
+                user_part_set: boolean;
                 user_submitted: boolean;
                 user_reported: boolean;
                 created: string;
@@ -27874,6 +27924,7 @@ export type NotificationsQuery = {
                       part?: number | null;
                       submissions: number;
                       reports: number;
+                      user_part_set: boolean;
                       user_submitted: boolean;
                       user_reported: boolean;
                       created: string;
@@ -28750,6 +28801,7 @@ export type NotificationsQuery = {
                       part?: number | null;
                       submissions: number;
                       reports: number;
+                      user_part_set: boolean;
                       user_submitted: boolean;
                       user_reported: boolean;
                       created: string;
@@ -28881,6 +28933,7 @@ export type NotificationsQuery = {
                 part?: number | null;
                 submissions: number;
                 reports: number;
+                user_part_set: boolean;
                 user_submitted: boolean;
                 user_reported: boolean;
                 created: string;
@@ -29041,6 +29094,7 @@ export type NotificationsQuery = {
                       part?: number | null;
                       submissions: number;
                       reports: number;
+                      user_part_set: boolean;
                       user_submitted: boolean;
                       user_reported: boolean;
                       created: string;
@@ -29917,6 +29971,7 @@ export type NotificationsQuery = {
                       part?: number | null;
                       submissions: number;
                       reports: number;
+                      user_part_set: boolean;
                       user_submitted: boolean;
                       user_reported: boolean;
                       created: string;
@@ -30132,6 +30187,7 @@ export type NotificationsQuery = {
                       part?: number | null;
                       submissions: number;
                       reports: number;
+                      user_part_set: boolean;
                       user_submitted: boolean;
                       user_reported: boolean;
                       created: string;
@@ -31008,6 +31064,7 @@ export type NotificationsQuery = {
                       part?: number | null;
                       submissions: number;
                       reports: number;
+                      user_part_set: boolean;
                       user_submitted: boolean;
                       user_reported: boolean;
                       created: string;
@@ -31138,6 +31195,7 @@ export type SceneQuery = {
       part?: number | null;
       submissions: number;
       reports: number;
+      user_part_set: boolean;
       user_submitted: boolean;
       user_reported: boolean;
       created: string;
@@ -32537,6 +32595,10 @@ export const SceneFragmentDoc = {
                 { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "user_part_set" },
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "user_submitted" },
@@ -34183,6 +34245,10 @@ export const EditFragmentDoc = {
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
                   kind: "Field",
+                  name: { kind: "Name", value: "user_part_set" },
+                },
+                {
+                  kind: "Field",
                   name: { kind: "Name", value: "user_submitted" },
                 },
                 {
@@ -34632,6 +34698,10 @@ export const NotificationCommentFragmentDoc = {
                 { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "user_part_set" },
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "user_submitted" },
@@ -36804,6 +36874,10 @@ export const ApplyEditDocument = {
                 { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "user_part_set" },
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "user_submitted" },
@@ -39393,6 +39467,10 @@ export const PerformerEditDocument = {
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
                   kind: "Field",
+                  name: { kind: "Name", value: "user_part_set" },
+                },
+                {
+                  kind: "Field",
                   name: { kind: "Name", value: "user_submitted" },
                 },
                 {
@@ -41036,6 +41114,10 @@ export const PerformerEditUpdateDocument = {
                 { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "user_part_set" },
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "user_submitted" },
@@ -42869,6 +42951,10 @@ export const SceneEditDocument = {
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
                   kind: "Field",
+                  name: { kind: "Name", value: "user_part_set" },
+                },
+                {
+                  kind: "Field",
                   name: { kind: "Name", value: "user_submitted" },
                 },
                 {
@@ -44511,6 +44597,10 @@ export const SceneEditUpdateDocument = {
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
                   kind: "Field",
+                  name: { kind: "Name", value: "user_part_set" },
+                },
+                {
+                  kind: "Field",
                   name: { kind: "Name", value: "user_submitted" },
                 },
                 {
@@ -46138,6 +46228,10 @@ export const StudioEditDocument = {
                 { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "user_part_set" },
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "user_submitted" },
@@ -47782,6 +47876,10 @@ export const StudioEditUpdateDocument = {
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
                   kind: "Field",
+                  name: { kind: "Name", value: "user_part_set" },
+                },
+                {
+                  kind: "Field",
                   name: { kind: "Name", value: "user_submitted" },
                 },
                 {
@@ -49409,6 +49507,10 @@ export const TagEditDocument = {
                 { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "user_part_set" },
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "user_submitted" },
@@ -51051,6 +51153,10 @@ export const TagEditUpdateDocument = {
                 { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "user_part_set" },
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "user_submitted" },
@@ -53492,6 +53598,10 @@ export const VoteDocument = {
                 { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "user_part_set" },
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "user_submitted" },
@@ -55981,6 +56091,10 @@ export const EditDocument = {
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
                   kind: "Field",
+                  name: { kind: "Name", value: "user_part_set" },
+                },
+                {
+                  kind: "Field",
                   name: { kind: "Name", value: "user_submitted" },
                 },
                 {
@@ -58194,6 +58308,10 @@ export const EditUpdateDocument = {
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
                   kind: "Field",
+                  name: { kind: "Name", value: "user_part_set" },
+                },
+                {
+                  kind: "Field",
                   name: { kind: "Name", value: "user_submitted" },
                 },
                 {
@@ -58672,6 +58790,10 @@ export const EditsDocument = {
                 { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "user_part_set" },
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "user_submitted" },
@@ -61185,6 +61307,10 @@ export const QueryExistingPerformerDocument = {
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
                   kind: "Field",
+                  name: { kind: "Name", value: "user_part_set" },
+                },
+                {
+                  kind: "Field",
                   name: { kind: "Name", value: "user_submitted" },
                 },
                 {
@@ -62834,6 +62960,10 @@ export const QueryExistingSceneDocument = {
                 { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "user_part_set" },
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "user_submitted" },
@@ -64824,6 +64954,10 @@ export const NotificationsDocument = {
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
                 {
                   kind: "Field",
+                  name: { kind: "Name", value: "user_part_set" },
+                },
+                {
+                  kind: "Field",
                   name: { kind: "Name", value: "user_submitted" },
                 },
                 {
@@ -66266,6 +66400,10 @@ export const SceneDocument = {
                 { kind: "Field", name: { kind: "Name", value: "part" } },
                 { kind: "Field", name: { kind: "Name", value: "submissions" } },
                 { kind: "Field", name: { kind: "Name", value: "reports" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "user_part_set" },
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "user_submitted" },

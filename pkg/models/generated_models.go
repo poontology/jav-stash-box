@@ -207,6 +207,8 @@ type Fingerprint struct {
 	Reports int       `json:"reports"`
 	Created time.Time `json:"created"`
 	Updated time.Time `json:"updated"`
+	// true if the current user set the part number
+	UserPartSet bool `json:"user_part_set"`
 	// true if the current user submitted this fingerprint
 	UserSubmitted bool `json:"user_submitted"`
 	// true if the current user reported this fingerprint

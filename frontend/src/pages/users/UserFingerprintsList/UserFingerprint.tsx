@@ -39,7 +39,7 @@ export const UserFingerprint: FC<Props> = ({
         <FingerprintPart
           sceneId={scene_id}
           fingerprintId={fingerprint.id}
-          currentPart={fingerprint.part ?? null}
+          userPartSet={fingerprint.part !== null}
         />
         {fingerprint.part !== null && `Part: ${fingerprint.part}`}
       </span>
